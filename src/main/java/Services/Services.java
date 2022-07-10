@@ -1,6 +1,8 @@
 package Services;
 
+import Entities.ExceptionPerson;
 import Entities.Person;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Services {
@@ -19,7 +21,7 @@ public class Services {
     this.height = height;*/
 
 
-  public Person createPerson() {
+  public Person createPerson() throws ExceptionPerson {
 
     Person person = new Person();
 
@@ -33,7 +35,20 @@ public class Services {
 
     //CARGA DE LA EDAD
     System.out.println("02 - Ingrese la edad: ");
-    person.setAge(read.nextInt());
+    try {
+      person.setAge(read.nextInt());
+
+      if (person.getAge() == null) {
+        throw new InputMismatchException("La edad está sin cargar");
+      }
+      if (person.getAge() == 0) {
+        throw new ExceptionPerson("La edad no puede ser 0");
+      }
+
+    } catch (ExceptionPerson e) {
+      System.out.println(e.getMessage());
+    }
+
 
     //CARGA DEL SEXO
     System.out.println("03 - Seleccione M o F para el sexo: ");
@@ -52,8 +67,25 @@ public class Services {
     //CARGA DE LA ALTURA [000.00]
     System.out.println("05 - Ingrese la altura en [0.00 m]");
     person.setHeight(read.nextDouble());
+
+    return person;
   }
 
+//SOLO SE CARGARÁ EL MÉTODO PARA DETERMINAR SI ES MAYOR DE EDAD, PARA HACER EL TRY-CATCH
+//• Método esMayorDeEdad():indica si la persona es mayor de edad. La función
+//devuelve un booleano.
+
+  public boolean isOverAge(Person majority) throws ExceptionPerson {
+
+    if (majority == null) {
+      throw new ExceptionPerson("La persona está sin cargar");
+    }
+    if (majority.getAge() == null) {
+      throw new ExceptionPerson("La Edad está sin cargar");
+    }
+
+    return majority.getAge() >= 18;
+  }
 
 }
 
